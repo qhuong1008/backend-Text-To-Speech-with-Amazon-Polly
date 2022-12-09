@@ -1,59 +1,62 @@
 const sql = require("mssql");
 
-async function getCourses() {
+async function getWords() {
   try {
     let pool = await sql.connect(
       "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
     );
-    let users = await pool.request().query("SELECT * from Course");
+    let users = await pool.request().query("SELECT * from Word");
     return users.recordsets;
   } catch (error) {
     console.log(error);
   }
 }
-async function getCourseById(courseId) {
+async function getWordById(wordId) {
   try {
     let pool = await sql.connect(
       "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
     );
     let user = await pool
       .request()
-      .input("courseId", sql.Int, courseId)
-      .query("select * from Course where Course.courseId = @courseId");
+      .input("wordId", sql.Int, wordId)
+      .query("select * from Word where Word.wordId = @wordId");
     return user.recordsets;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function addCourse(Course) {
+async function addWord(word) {
   try {
     let pool = await sql.connect(
       "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
     );
     let insertProduct = await pool
       .request()
-      .input("courseName", sql.NVarChar, Course.courseName)
-      .input("accountId", sql.Int, Course.accountId)
-      .query("insert into Course values (@courseName,@accountId)");
+      .input("eng", sql.VarChar, word.eng)
+      .input("pronounce", sql.VarChar, word.pronounce)
+      .input("viet", sql.NVarChar, word.viet)
+      .input("topicId", sql.Int, word.topicId)
+      .query("insert into Word values (@eng,@pronounce,@viet,@topicId)");
     return insertProduct.recordsets;
   } catch (err) {
     console.log(err);
   }
 }
 
-async function updateCourseById(Course, courseId) {
+async function updateWordById(word, wordId) {
   try {
     let pool = await sql.connect(
       "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
     );
     let insertProduct = await pool
       .request()
-      .input("courseId", sql.Int, courseId)
-      .input("courseName", sql.NVarChar, Course.courseName)
-      .input("accountId", sql.Int, Course.accountId)
+      .input("wordId", sql.Int, wordId)
+      .input("eng", sql.VarChar, word.eng)
+      .input("pronounce", sql.VarChar, word.pronounce)
+      .input("viet", sql.NVarChar, word.viet)
       .query(
-        "update Course set Course.courseName=@courseName, Course.accountId = @accountId where Course.courseId=@courseId"
+        "update Word set Word.eng = @eng, Word.pronounce=@pronounce, Word.viet=@viet where Word.wordId=@wordId"
       );
     return insertProduct.recordsets;
   } catch (err) {
@@ -61,15 +64,15 @@ async function updateCourseById(Course, courseId) {
   }
 }
 
-async function deleteCourseById(courseId) {
+async function deleteWordById(wordId) {
   try {
     let pool = await sql.connect(
       "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
     );
     let user = await pool
       .request()
-      .input("courseId", sql.Int, courseId)
-      .query("delete from Course where Course.courseId = @courseId");
+      .input("wordId", sql.Int, wordId)
+      .query("delete from Word where Word.wordId = @wordId");
     return user.recordsets;
   } catch (error) {
     console.log(error);
@@ -77,9 +80,9 @@ async function deleteCourseById(courseId) {
 }
 
 module.exports = {
-  getCourses,
-  getCourseById,
-  addCourse,
-  updateCourseById,
-  deleteCourseById,
+  getWords,
+  getWordById,
+  addWord,
+  updateWordById,
+  deleteWordById,
 };

@@ -1,5 +1,7 @@
 const AccountDb = require("./dbOperate/Account/Account");
 const CourseDb = require("./dbOperate/Course/Course");
+const TopicDb = require("./dbOperate/Topic/Topic");
+const WordDb = require("./dbOperate/Word/Word");
 var User = require("./model/Account");
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -54,13 +56,13 @@ router.route("/accounts/:id").delete((request, response) => {
 // ****** API COURSE ******
 // *************************
 router.route("/courses").get((request, response) => {
-  CourseDb.getCourses().then((data) => {
+  CourseDb.getcourses().then((data) => {
     response.json(data[0]);
   });
 });
 
 router.route("/courses/:id").get((request, response) => {
-  CourseDb.getCourseById(request.params.id).then((data) => {
+  CourseDb.getTopicById(request.params.id).then((data) => {
     response.json(data[0]);
   });
 });
@@ -81,6 +83,74 @@ router.route("/courses/:id").post((request, response) => {
 
 router.route("/courses/:id").delete((request, response) => {
   CourseDb.deleteCourseById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+// ****** API TOPIC ******
+// *************************
+router.route("/topics").get((request, response) => {
+  TopicDb.getTopics().then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/topics/:id").get((request, response) => {
+  TopicDb.getTopicById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/topics").post((request, response) => {
+  let topic = { ...request.body };
+  TopicDb.addTopic(topic).then((data) => {
+    response.status(201).json(data);
+  });
+});
+
+router.route("/topics/:id").post((request, response) => {
+  let topic = { ...request.body };
+  TopicDb.updateTopicById(topic, request.params.id).then((data) => {
+    response.status(201).json(data);
+  });
+});
+
+router.route("/topics/:id").delete((request, response) => {
+  TopicDb.deleteTopicById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+// ****** API WORD ******
+// *************************
+router.route("/words").get((request, response) => {
+  WordDb.getWords().then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/words/:id").get((request, response) => {
+  WordDb.getWordById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/words").post((request, response) => {
+  let word = { ...request.body };
+  WordDb.addWord(word).then((data) => {
+    response.status(201).json(data);
+  });
+});
+
+router.route("/words/:id").post((request, response) => {
+  let word = { ...request.body };
+  WordDb.updateWordById(word, request.params.id).then((data) => {
+    response.status(201).json(data);
+  });
+});
+
+router.route("/words/:id").delete((request, response) => {
+  WordDb.deleteWordById(request.params.id).then((data) => {
     response.json(data[0]);
   });
 });
