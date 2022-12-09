@@ -26,6 +26,21 @@ async function getWordById(wordId) {
   }
 }
 
+async function getWordByTopicId(topicId) {
+  try {
+    let pool = await sql.connect(
+      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
+    );
+    let user = await pool
+      .request()
+      .input("topicId", sql.Int, topicId)
+      .query("select * from Word where Word.topicId = @topicId");
+    return user.recordsets;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function addWord(word) {
   try {
     let pool = await sql.connect(
@@ -85,4 +100,5 @@ module.exports = {
   addWord,
   updateWordById,
   deleteWordById,
+  getWordByTopicId,
 };

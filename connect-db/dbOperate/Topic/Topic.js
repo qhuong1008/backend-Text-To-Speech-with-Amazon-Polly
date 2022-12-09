@@ -26,6 +26,21 @@ async function getTopicById(topicId) {
   }
 }
 
+async function getTopicByCourseId(courseId) {
+  try {
+    let pool = await sql.connect(
+      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
+    );
+    let user = await pool
+      .request()
+      .input("courseId", sql.Int, courseId)
+      .query("select * from Topic where Topic.courseId = @courseId");
+    return user.recordsets;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function addTopic(topic) {
   try {
     let pool = await sql.connect(
@@ -82,4 +97,5 @@ module.exports = {
   addTopic,
   updateTopicById,
   deleteTopicById,
+  getTopicByCourseId,
 };

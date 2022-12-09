@@ -56,13 +56,19 @@ router.route("/accounts/:id").delete((request, response) => {
 // ****** API COURSE ******
 // *************************
 router.route("/courses").get((request, response) => {
-  CourseDb.getcourses().then((data) => {
+  CourseDb.getCourses().then((data) => {
     response.json(data[0]);
   });
 });
 
 router.route("/courses/:id").get((request, response) => {
-  CourseDb.getTopicById(request.params.id).then((data) => {
+  CourseDb.getCourseById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/courses/account/:id").get((request, response) => {
+  CourseDb.getCourseByAccountId(request.params.id).then((data) => {
     response.json(data[0]);
   });
 });
@@ -101,6 +107,12 @@ router.route("/topics/:id").get((request, response) => {
   });
 });
 
+router.route("/topics/course/:id").get((request, response) => {
+  TopicDb.getTopicByCourseId(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
 router.route("/topics").post((request, response) => {
   let topic = { ...request.body };
   TopicDb.addTopic(topic).then((data) => {
@@ -131,6 +143,12 @@ router.route("/words").get((request, response) => {
 
 router.route("/words/:id").get((request, response) => {
   WordDb.getWordById(request.params.id).then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/words/topic/:id").get((request, response) => {
+  WordDb.getWordByTopicId(request.params.id).then((data) => {
     response.json(data[0]);
   });
 });

@@ -26,6 +26,21 @@ async function getCourseById(courseId) {
   }
 }
 
+async function getCourseByAccountId(accountId) {
+  try {
+    let pool = await sql.connect(
+      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
+    );
+    let user = await pool
+      .request()
+      .input("accountId", sql.Int, accountId)
+      .query("select * from Course where Course.accountId = @accountId");
+    return user.recordsets;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function addCourse(Course) {
   try {
     let pool = await sql.connect(
@@ -82,4 +97,5 @@ module.exports = {
   addCourse,
   updateCourseById,
   deleteCourseById,
+  getCourseByAccountId,
 };
