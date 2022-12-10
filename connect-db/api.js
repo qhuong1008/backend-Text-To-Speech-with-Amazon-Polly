@@ -108,9 +108,11 @@ router.route("/topics/:id").get((request, response) => {
 });
 
 router.route("/topics/course/:id").get((request, response) => {
-  TopicDb.getTopicByCourseId(request.params.id).then((data) => {
-    response.json(data[0]);
-  });
+  TopicDb.getTopicByCourseId(request.params.id)
+    .then((data) => {
+      response.json(data[0]);
+    })
+    .catch((error) => console.log(error));
 });
 
 router.route("/topics").post((request, response) => {
