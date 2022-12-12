@@ -1,10 +1,22 @@
 const sql = require("mssql");
 
+var config = {
+  user: "sa",
+  password: "12345678",
+  server: "localhost",
+  database: "memozone_db",
+  options: {
+    encrypt: true,
+    enableArithAbort: true,
+    trustServerCertificate: true,
+  },
+};
 async function getCourses() {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
     let users = await pool.request().query("SELECT * from Course");
     return users.recordsets;
   } catch (error) {
@@ -13,9 +25,11 @@ async function getCourses() {
 }
 async function getCourseById(courseId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("courseId", sql.Int, courseId)
@@ -28,9 +42,11 @@ async function getCourseById(courseId) {
 
 async function getCourseByAccountId(accountId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("accountId", sql.Int, accountId)
@@ -43,9 +59,11 @@ async function getCourseByAccountId(accountId) {
 
 async function addCourse(Course) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
+
     let insertProduct = await pool
       .request()
       .input("courseName", sql.NVarChar, Course.courseName)
@@ -59,9 +77,11 @@ async function addCourse(Course) {
 
 async function updateCourseById(Course, courseId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
+
     let insertProduct = await pool
       .request()
       .input("courseId", sql.Int, courseId)
@@ -78,9 +98,11 @@ async function updateCourseById(Course, courseId) {
 
 async function deleteCourseById(courseId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    // let pool = await sql.connect(
+    //   "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=12345678;Trusted_Connection=True;TrustServerCertificate=True;"
+    // );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("courseId", sql.Int, courseId)

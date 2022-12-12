@@ -162,6 +162,13 @@ router.route("/words").post((request, response) => {
   });
 });
 
+router.route("/wordlist").post((request, response) => {
+  let wordlist = [...request.body];
+  WordDb.addWordList(wordlist).then((data) => {
+    response.status(201).json(data);
+  });
+});
+
 router.route("/words/:id").post((request, response) => {
   let word = { ...request.body };
   WordDb.updateWordById(word, request.params.id).then((data) => {

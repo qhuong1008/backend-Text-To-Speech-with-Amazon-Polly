@@ -1,10 +1,19 @@
 const sql = require("mssql");
-
+var config = {
+  user: "sa",
+  password: "12345678",
+  server: "localhost",
+  database: "memozone_db",
+  options: {
+    encrypt: true,
+    enableArithAbort: true,
+    trustServerCertificate: true,
+  },
+};
 async function getWords() {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let users = await pool.request().query("SELECT * from Word");
     return users.recordsets;
   } catch (error) {
@@ -13,9 +22,8 @@ async function getWords() {
 }
 async function getWordById(wordId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("wordId", sql.Int, wordId)
@@ -28,9 +36,8 @@ async function getWordById(wordId) {
 
 async function getWordByTopicId(topicId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("topicId", sql.Int, topicId)
@@ -43,9 +50,26 @@ async function getWordByTopicId(topicId) {
 
 async function addWord(word) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
+    let insertProduct = await pool
+      .request()
+      .input("eng", sql.VarChar, word.eng)
+      .input("pronounce", sql.VarChar, word.pronounce)
+      .input("viet", sql.NVarChar, word.viet)
+      .input("topicId", sql.Int, word.topicId)
+      .query("insert into Word values (@eng,@pronounce,@viet,@topicId)");
+    return insertProduct.recordsets;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function addWordList(wordlist) {
+  try {
+    let pool = await sql.connect(config);
+
+    wordlist.forEach((word) => {});
     let insertProduct = await pool
       .request()
       .input("eng", sql.VarChar, word.eng)
@@ -61,9 +85,8 @@ async function addWord(word) {
 
 async function updateWordById(word, wordId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let insertProduct = await pool
       .request()
       .input("wordId", sql.Int, wordId)
@@ -81,9 +104,8 @@ async function updateWordById(word, wordId) {
 
 async function deleteWordById(wordId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("wordId", sql.Int, wordId)
@@ -101,4 +123,5 @@ module.exports = {
   updateWordById,
   deleteWordById,
   getWordByTopicId,
+  addWordList,
 };

@@ -1,10 +1,19 @@
 const sql = require("mssql");
-
+var config = {
+  user: "sa",
+  password: "12345678",
+  server: "localhost",
+  database: "memozone_db",
+  options: {
+    encrypt: true,
+    enableArithAbort: true,
+    trustServerCertificate: true,
+  },
+};
 async function getTopics() {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let users = await pool.request().query("SELECT * from Topic");
     return users.recordsets;
   } catch (error) {
@@ -13,9 +22,8 @@ async function getTopics() {
 }
 async function getTopicById(topicId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("topicId", sql.Int, topicId)
@@ -28,9 +36,8 @@ async function getTopicById(topicId) {
 
 async function getTopicByCourseId(courseId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("courseId", sql.Int, courseId)
@@ -43,9 +50,8 @@ async function getTopicByCourseId(courseId) {
 
 async function addTopic(topic) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let insertProduct = await pool
       .request()
       .input("topicName", sql.NVarChar, topic.topicName)
@@ -59,9 +65,8 @@ async function addTopic(topic) {
 
 async function updateTopicById(topic, topicId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let insertProduct = await pool
       .request()
       .input("topicId", sql.Int, topicId)
@@ -78,9 +83,8 @@ async function updateTopicById(topic, topicId) {
 
 async function deleteTopicById(topicId) {
   try {
-    let pool = await sql.connect(
-      "Server=localhost,1433;Database=memozone_db;User Id=sa;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;"
-    );
+    let pool = await sql.connect(config);
+
     let user = await pool
       .request()
       .input("topicId", sql.Int, topicId)
