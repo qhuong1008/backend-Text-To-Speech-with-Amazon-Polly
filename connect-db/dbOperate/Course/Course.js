@@ -1,10 +1,9 @@
 const sql = require("mssql");
-
 var config = {
-  user: "sa",
-  password: "12345678",
-  server: "localhost",
-  database: "memozone_db",
+  user: "uteojco1_aws",
+  password: "HuongPq123@",
+  server: "125.212.224.205",
+  database: "uteojco1_dientoandammay",
   options: {
     encrypt: true,
     enableArithAbort: true,
