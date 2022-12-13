@@ -15,7 +15,16 @@ app.use(cors());
 app.use("/api", router);
 
 router.use((request, response, next) => {
-  console.log("middleware");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "accept, authorization, content-type, x-requested-with"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,PUT,PATCH,POST,DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Origin", req.header("origin"));
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 
